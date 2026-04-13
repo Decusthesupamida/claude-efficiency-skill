@@ -56,9 +56,13 @@ if [[ -f "$TARGET/settings.json" ]]; then
   echo "→ $TARGET/settings.json already exists — attempting automatic merge…"
   if command -v jq >/dev/null 2>&1; then
     curl -fsSL "$REPO/.claude/settings.json" -o "$TARGET/settings.json.pack"
-    bash ./merge-settings.sh "$TARGET/settings.json" "$TARGET/settings.json.pack" && \
-      rm -f "$TARGET/settings.json.pack" && \
+    if bash ./merge-settings.sh "$TARGET/settings.json" "$TARGET/settings.json.pack"; then
       echo "✓ settings.json merged."
+      rm -f "$TARGET/settings.json.pack"
+    else
+      echo "⚠  settings.json merge failed — your original is untouched."
+      echo "   Reference hooks are kept at: $TARGET/settings.json.pack"
+    fi
   else
     echo "⚠  jq not available — cannot auto-merge settings.json."
     echo "   Install jq, or hand-merge from: $REPO/.claude/settings.json"
