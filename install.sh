@@ -1,15 +1,15 @@
 #!/bin/bash
 # Claude Code Efficiency Pack — installer
 # Usage:
-#   curl -fsSL https://raw.githubusercontent.com/Decusthesupamida/claude-efficiency-skill/main/efficiency-pack/efficiency-pack/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/Decusthesupamida/claude-efficiency-skill/main/install.sh | bash
 #
 # Override the source with:
-#   EFFICIENCY_PACK_REPO=https://raw.githubusercontent.com/<user>/<repo>/<branch>/<path> bash install.sh
+#   EFFICIENCY_PACK_REPO=https://raw.githubusercontent.com/<user>/<repo>/<branch> bash install.sh
 
 set -euo pipefail
 
-# Raw-content URL pointing at the inner pack directory (where CLAUDE.md / .claude/ live).
-REPO="${EFFICIENCY_PACK_REPO:-https://raw.githubusercontent.com/Decusthesupamida/claude-efficiency-skill/main/efficiency-pack/efficiency-pack}"
+# Raw-content URL pointing at the repo root (where CLAUDE.md / .claude/ live).
+REPO="${EFFICIENCY_PACK_REPO:-https://raw.githubusercontent.com/Decusthesupamida/claude-efficiency-skill/main}"
 TARGET=".claude"
 BEGIN_MARKER="<!-- efficiency-pack:begin -->"
 END_MARKER="<!-- efficiency-pack:end -->"

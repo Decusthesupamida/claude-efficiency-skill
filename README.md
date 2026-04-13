@@ -29,46 +29,22 @@ Two skills + one rule + four hooks that work together — and log what they save
 | `auto-checkpoint.sh` | hook | PostToolUse/Write\|Edit — logs changed files for checkpoint |
 | `session-start.sh` | hook | SessionStart — auto-injects unfinished checkpoint |
 
-## Repo layout
-
-```
-claude-efficiency-skill/
-├── README.md                         ← you are here
-├── LICENSE                           ← MIT
-├── CLAUDE.md                         ← guidance for Claude when editing this repo
-└── efficiency-pack/
-    └── efficiency-pack/              ← the actual distributable (drop this into your project)
-        ├── CLAUDE.md                 ← consumer-facing CLAUDE.md fragment
-        ├── README.md                 ← consumer-facing readme
-        ├── install.sh                ← one-shot installer
-        ├── merge-settings.sh         ← jq-based settings.json merger
-        ├── bench.sh                  ← aggregate metrics
-        ├── clean.sh                  ← remove runtime artifacts
-        └── .claude/
-            ├── settings.json         ← hook registration
-            ├── rules/context-guardian.md
-            ├── skills/{task-decomposer,checkpoint}.md
-            └── hooks/{context-filter,token-meter,auto-checkpoint,session-start}.sh
-```
-
-The nested `efficiency-pack/efficiency-pack/` is intentional — the inner directory is
-what gets copied into your project, so its structure matches your project's layout 1:1.
-
 ## Install
 
 **Option A — one-liner (requires `curl`, `bash`, recommended `jq`):**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Decusthesupamida/claude-efficiency-skill/main/efficiency-pack/efficiency-pack/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Decusthesupamida/claude-efficiency-skill/main/install.sh | bash
 ```
 
 **Option B — manual:**
 
 ```bash
-git clone https://github.com/Decusthesupamida/claude-efficiency-skill.git
-cp -r claude-efficiency-skill/efficiency-pack/efficiency-pack/.claude ./
-cp claude-efficiency-skill/efficiency-pack/efficiency-pack/{bench,clean,merge-settings}.sh ./
-cat claude-efficiency-skill/efficiency-pack/efficiency-pack/CLAUDE.md >> CLAUDE.md
+git clone https://github.com/Decusthesupamida/claude-efficiency-skill.git .pack-tmp
+cp -r .pack-tmp/.claude ./
+cp .pack-tmp/{install.sh,merge-settings.sh,bench.sh,clean.sh} ./
+cat .pack-tmp/CLAUDE.md >> CLAUDE.md
+rm -rf .pack-tmp
 ```
 
 Then add runtime artifacts to `.gitignore`:
@@ -119,6 +95,27 @@ Run the same task twice — once with the pack disabled, once enabled — and co
 - **To disable `context-guardian`** — see the "How to disable" section in
   `.claude/rules/context-guardian.md`. The other components keep working without it.
 
+## Repo layout
+
+The repo **is** the distributable. No nested wrapper directory.
+
+```
+claude-efficiency-skill/
+├── README.md              ← you are here
+├── CLAUDE.md              ← consumer-facing fragment, loaded by Claude Code
+├── CONTRIBUTING.md        ← dev guidance for editing the pack itself
+├── LICENSE                ← MIT
+├── install.sh             ← one-shot installer
+├── merge-settings.sh      ← jq-based settings.json merger
+├── bench.sh               ← aggregate metrics
+├── clean.sh               ← remove runtime artifacts
+└── .claude/
+    ├── settings.json
+    ├── rules/context-guardian.md
+    ├── skills/{task-decomposer,checkpoint}.md
+    └── hooks/{context-filter,token-meter,auto-checkpoint,session-start}.sh
+```
+
 ## Dependencies
 
 - `bash` 4+ (macOS ships 3.x — install via brew or use zsh with the `-c` invocation).
@@ -138,9 +135,9 @@ Run the same task twice — once with the pack disabled, once enabled — and co
 
 ## Contributing
 
-Issues and PRs welcome. Read `CLAUDE.md` for the architectural ground rules —
-especially the note about how hook filenames, `install.sh` paths, and skill
-frontmatter are coupled. Renaming one thing usually means editing three.
+Issues and PRs welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) for the architectural
+ground rules — especially how hook filenames, `install.sh` paths, and skill frontmatter
+are coupled. Renaming one thing usually means editing three.
 
 ## License
 

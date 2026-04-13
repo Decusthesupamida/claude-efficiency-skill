@@ -13,6 +13,5 @@
 .DS_Store
 Thumbs.db
 
-# Release artifact — rebuild with:
-#   tar -czf efficiency-pack.tar.gz -C efficiency-pack efficiency-pack
-efficiency-pack.tar.gz
+# Release artifacts (built locally or in CI, published to GitHub Releases)
+*.tar.gz
