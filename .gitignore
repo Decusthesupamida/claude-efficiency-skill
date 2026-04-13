@@ -1,0 +1,18 @@
+# Claude Code runtime artifacts — never commit
+.claude/checkpoint.md
+.claude/edit-log.tmp
+.claude/metrics.jsonl
+.claude/metrics.jsonl.bak
+.claude/settings.local.json
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Release artifact — rebuild with:
+#   tar -czf efficiency-pack.tar.gz -C efficiency-pack efficiency-pack
+efficiency-pack.tar.gz
